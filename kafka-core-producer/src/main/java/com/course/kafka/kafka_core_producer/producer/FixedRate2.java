@@ -6,7 +6,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class FixedRate2 {
 
     private static final Logger log = LoggerFactory.getLogger(FixedRate2.class);
