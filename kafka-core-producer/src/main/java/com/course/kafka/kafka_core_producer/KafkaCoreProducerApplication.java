@@ -41,7 +41,7 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 			LOG.info("Sending message with key: {} and message: {}", key, message);
             kafkaKeyProducer.sendMessage(key, message);
 
-			TimeUnit.SECONDS.sleep(1);
+			//TimeUnit.SECONDS.sleep(1);
         }
 
 	}
