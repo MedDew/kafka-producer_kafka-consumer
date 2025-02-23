@@ -6,7 +6,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class FixedRateAIProducer {
     
     private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(FixedRateAIProducer.class);
