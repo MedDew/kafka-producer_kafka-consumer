@@ -1,5 +1,7 @@
 package com.course.kafka.kafka_core_producer;
 
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,14 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		for (int i = 1; i <= 30; i++) {
+		for (int i = 1; i <= 10_000; i++) {
             String key = "key-" + i;
             String message = "Message " + i;
 
 			LOG.info("Sending message with key: {} and message: {}", key, message);
             kafkaKeyProducer.sendMessage(key, message);
+
+			TimeUnit.SECONDS.sleep(1);
         }
 
 	}
