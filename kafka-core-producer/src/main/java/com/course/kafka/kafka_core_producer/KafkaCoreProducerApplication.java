@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
