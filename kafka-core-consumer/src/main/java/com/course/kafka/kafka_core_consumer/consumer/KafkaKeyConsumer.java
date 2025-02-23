@@ -14,9 +14,9 @@ public class KafkaKeyConsumer {
 
     private static final Logger LOG = LoggerFactory.getLogger(KafkaKeyConsumer.class);
 
-    @KafkaListener(topics = "t-multi-partitions")
+    @KafkaListener(topics = "t-multi-partitions", concurrency = "4")
     public void consumeMessage(ConsumerRecord<String, String> record) throws InterruptedException {
-        LOG.info("Key = {} | Value = {}" , record.key() , record.value());
+        LOG.info("Key = {} | Value = {} | Partition = {}" , record.key() , record.value(), record.partition());
         TimeUnit.SECONDS.sleep(1);
     }
 }
