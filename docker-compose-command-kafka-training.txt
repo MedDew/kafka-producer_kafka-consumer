@@ -1,0 +1,41 @@
+++> core kafka
+
+	//run the docker-compose-core.yml file with a given project name ( core )  and start it in th background ( up -d )
+	docker-compose -f docker-compose-core.yml -p core up -d
+
+++> kafka connect
+
+	//run the docker-compose-core.yml file to stop and remove the container
+	docker-compose -f docker-compose-core.yml -p core down 
+	
+	//run the docker-compose-connect.yml file with a given project name ( connect )  and start it in th background ( up -d )
+	docker-compose -f docker-compose-connect.yml -p connect up -d
+	
+	//run the docker-compose-connect-sample.yml file with a given project name ( connect-sample )  and start it in th background ( up -d )
+	docker-compose -f docker-compose-connect-sample.yml -p connect-sample up -d
+	
+++> kafka user interface
+
+	//run the docker-compose-connect.yml file to stop and remove the container
+	docker-compose -f docker-compose-connect.yml -p connect down
+	
+	//run the docker-compose-connect-sample.yml file to stop and remove the container
+	docker-compose -f docker-compose-connect-sample.yml -p connect-sample down
+	
+	//run the docker-compose-ui.yml file with a given project name ( kafka-ui )  and start it in th background ( up -d )
+	docker-compose -f docker-compose-ui.yml -p kafka-ui up -d
+	
+++> kafka full (schema registry | REST proxy | ksqldb | kafka connect, UI)
+
+	//run the docker-compose-ui.yml file to stop and remove the container
+	docker-compose -f docker-compose-ui.yml -p kafka-ui down
+	
+	//run the docker-compose-full.yml file with a given project name ( full )  and start it in th background ( up -d )
+	docker-compose -f docker-compose-full.yml -p full up -d
+	
+	//run the docker-compose-connect-full-sample.yml file with a given project name ( connect-full-sample )  and start it in th background ( up -d )
+	docker-compose -f docker-compose-connect-full-sample.yml -p connect-full-sample up -d
+	
+	
+
+
