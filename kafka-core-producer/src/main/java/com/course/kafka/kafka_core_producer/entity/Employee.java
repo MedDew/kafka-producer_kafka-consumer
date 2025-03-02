@@ -3,6 +3,10 @@ package com.course.kafka.kafka_core_producer.entity;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonNaming(value = PropertyNamingStrategy.KebabCaseStrategy.class)
 public class Employee {
 
     private UUID employeeId;
