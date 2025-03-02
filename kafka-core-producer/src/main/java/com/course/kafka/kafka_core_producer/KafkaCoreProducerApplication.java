@@ -1,31 +1,28 @@
 package com.course.kafka.kafka_core_producer;
 
+import java.time.LocalDate;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.course.kafka.kafka_core_producer.producer.KafkaKeyProducer;
-
+import com.course.kafka.kafka_core_producer.entity.Employee;
+import com.course.kafka.kafka_core_producer.producer.Employee2JsonProducer;
 
 @SpringBootApplication
-//@EnableScheduling
 public class KafkaCoreProducerApplication implements CommandLineRunner {
-
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
 
-	@Autowired
- 	private KafkaKeyProducer kafkaKeyProducer;
+	private final Employee2JsonProducer employeeJsonProducer;
 
-    public KafkaCoreProducerApplication(KafkaKeyProducer kafkaKeyProducer) {
-        this.kafkaKeyProducer = kafkaKeyProducer;
-    }
+	public KafkaCoreProducerApplication(Employee2JsonProducer employeeJsonProducer) {
+		this.employeeJsonProducer = employeeJsonProducer;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(KafkaCoreProducerApplication.class, args);
@@ -34,16 +31,12 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		for (int i = 1; i <= 10_000; i++) {
-            String key = "key-" + i;
-            String message = "Message " + i;
-
-			LOG.info("Sending message with key: {} and message: {}", key, message);
-            kafkaKeyProducer.sendMessage(key, message);
-
-			//TimeUnit.SECONDS.sleep(1);
-        }
-
+		for (int i = 1; i <= 5; i++) {
+			Employee employee = new Employee(UUID.randomUUID(), "Name " + i, LocalDate.now().minusYears(20 + i));
+			employeeJsonProducer.sendMessage(employee);
+			LOG.info("Sent employee: {}", employee);
+			TimeUnit.SECONDS.sleep(1);
+		}
 	}
 
 }
