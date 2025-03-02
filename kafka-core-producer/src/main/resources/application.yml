@@ -7,3 +7,5 @@ spring:
     main:
         banner-mode: "off"
         log-startup-info: false 
+    jackson:
+        date-format: dd-MM-yyyy
