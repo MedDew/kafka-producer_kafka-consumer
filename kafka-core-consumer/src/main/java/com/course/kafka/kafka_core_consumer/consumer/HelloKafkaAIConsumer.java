@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HelloKafkaAIConsumer {
 
-    @KafkaListener(topics = "t-hello")//, groupId = "hello-group"
+    // @KafkaListener(topics = "t-hello")//, groupId = "hello-group"
     public void consume(ConsumerRecord<String, String> record) {
         System.out.println("Received message: " + record.value());
     }

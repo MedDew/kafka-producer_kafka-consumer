@@ -10,7 +10,7 @@ public class FixedRate2Consumer {
 
     private static final Logger LOG = LoggerFactory.getLogger(FixedRate2Consumer.class);
 
-    @KafkaListener(topics = "t-fixedrate-2")
+    // @KafkaListener(topics = "t-fixedrate-2")
     public void consumeMessage(String message) {
         LOG.info("t-fixedrate-2 consumed message with auto-offset-reset set to earliest: " + message);
     }
