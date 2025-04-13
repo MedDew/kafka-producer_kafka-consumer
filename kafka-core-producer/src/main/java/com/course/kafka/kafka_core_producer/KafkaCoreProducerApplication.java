@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.course.kafka.kafka_core_producer.entity.Employee;
 import com.course.kafka.kafka_core_producer.producer.Employee2JsonProducer;
 
 @SpringBootApplication
+@EnableScheduling
 public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
