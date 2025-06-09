@@ -9,3 +9,9 @@ spring:
         log-startup-info: false 
     jackson:
         date-format: dd-MM-yyyy
+    kafka:
+        bootstrap-servers: localhost:9092
+        properties:
+            metrics:
+                num:
+                    samples: 3
