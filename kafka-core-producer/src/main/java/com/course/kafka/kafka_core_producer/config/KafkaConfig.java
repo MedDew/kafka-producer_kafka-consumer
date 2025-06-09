@@ -16,7 +16,7 @@ public class KafkaConfig {
     @Autowired
     private KafkaProperties kafkaProperties;
 
-    @Bean
+    // @Bean
     public ProducerFactory<String, String> producerFactory(SslBundles sslBundles) {
         var properties = kafkaProperties.buildProducerProperties(sslBundles);
         properties.put(ProducerConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG, "50000");
@@ -24,7 +24,7 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(properties);
     }
 
-    @Bean
+    // @Bean
     public KafkaTemplate<String, String> kafkaTemplate(SslBundles sslBundles) {
         return new KafkaTemplate<>(producerFactory(sslBundles));
     }

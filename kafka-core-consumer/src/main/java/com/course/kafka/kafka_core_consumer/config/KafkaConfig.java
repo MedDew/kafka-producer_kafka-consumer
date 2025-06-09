@@ -15,7 +15,7 @@ public class KafkaConfig {
     @Autowired
     private KafkaProperties kafkaProperties;
 
-    @Bean
+    // @Bean
     public ConsumerFactory<Object, Object> consumerFactory(SslBundles sslBundles) {
         var properties = kafkaProperties.buildConsumerProperties(sslBundles);
         properties.put(ConsumerConfig.METRICS_SAMPLE_WINDOW_MS_CONFIG, "40000");
