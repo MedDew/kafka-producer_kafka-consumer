@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import com.course.kafka.kafka_core_producer.entity.Employee;
 import com.course.kafka.kafka_core_producer.producer.CounterProducer;
 import com.course.kafka.kafka_core_producer.producer.Employee2JsonProducer;
+import com.course.kafka.kafka_core_producer.producer.HelloKafkaProducer;
 
 @SpringBootApplication
 // @EnableScheduling
@@ -25,8 +27,11 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private final CounterProducer counterProducer;
 
+	private final HelloKafkaProducer helloKafkaProducer;
+
 	public KafkaCoreProducerApplication(Employee2JsonProducer employeeJsonProducer,
-			final CounterProducer counterProducer) {
+			final CounterProducer counterProducer, HelloKafkaProducer helloKafkaProducer) {
+		this.helloKafkaProducer = helloKafkaProducer;
 		this.counterProducer = counterProducer;
 		this.employeeJsonProducer = employeeJsonProducer;
 	}
@@ -37,7 +42,7 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		counterProducer.sendMessage(100);
+		helloKafkaProducer.sendHello("Mehdi");
 	}
 
 	/*
