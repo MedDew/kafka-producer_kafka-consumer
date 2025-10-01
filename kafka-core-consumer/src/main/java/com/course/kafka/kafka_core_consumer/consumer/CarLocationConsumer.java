@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Service
+//@Service
 public class CarLocationConsumer {
 
     private static final Logger LOG = LoggerFactory.getLogger(CarLocationConsumer.class);
