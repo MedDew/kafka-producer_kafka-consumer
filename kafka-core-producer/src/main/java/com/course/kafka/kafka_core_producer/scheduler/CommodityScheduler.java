@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import com.course.kafka.kafka_core_producer.entity.Commodity;
 import com.course.kafka.kafka_core_producer.producer.CommodityProducer;
 
-@Component
+//@Component
 public class CommodityScheduler {
 
     private RestTemplate restTemplate = new RestTemplate();

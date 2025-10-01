@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.course.kafka.kafka_core_consumer.entity.Commodity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Service
+//@Service
 public class CommodityNotificationConsumer {
 
     @Autowired

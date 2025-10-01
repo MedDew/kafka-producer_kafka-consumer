@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.course.kafka.kafka_core_producer.entity.Commodity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Service
+// @Service
 public class CommodityProducer {
 
     @Autowired
