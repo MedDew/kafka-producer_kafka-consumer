@@ -18,7 +18,7 @@ import com.course.kafka.kafka_core_producer.producer.Employee2JsonProducer;
 import com.course.kafka.kafka_core_producer.producer.HelloKafkaProducer;
 
 @SpringBootApplication
-// @EnableScheduling
+@EnableScheduling
 public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
