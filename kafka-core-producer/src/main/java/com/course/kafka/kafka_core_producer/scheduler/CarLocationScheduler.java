@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.course.kafka.kafka_core_producer.entity.CarLocation;
 import com.course.kafka.kafka_core_producer.producer.CarLocationProducer;
 
-@Service
+//@Service
 public class CarLocationScheduler {
 
     private static final Logger LOG = LoggerFactory.getLogger(CarLocationScheduler.class);
