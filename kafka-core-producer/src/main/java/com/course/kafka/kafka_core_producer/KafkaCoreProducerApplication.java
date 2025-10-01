@@ -1,21 +1,18 @@
 package com.course.kafka.kafka_core_producer;
 
-import java.time.LocalDate;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.course.kafka.kafka_core_producer.entity.Employee;
+import com.course.kafka.kafka_core_producer.entity.PurchaseRequest;
 import com.course.kafka.kafka_core_producer.producer.CounterProducer;
 import com.course.kafka.kafka_core_producer.producer.Employee2JsonProducer;
 import com.course.kafka.kafka_core_producer.producer.HelloKafkaProducer;
+import com.course.kafka.kafka_core_producer.producer.PurchaseRequestProducer;
 
 @SpringBootApplication
 // @EnableScheduling
@@ -29,11 +26,15 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private final HelloKafkaProducer helloKafkaProducer;
 
+	private PurchaseRequestProducer purchaseRequestProducer;
+
 	public KafkaCoreProducerApplication(Employee2JsonProducer employeeJsonProducer,
-			final CounterProducer counterProducer, HelloKafkaProducer helloKafkaProducer) {
+			final CounterProducer counterProducer, HelloKafkaProducer helloKafkaProducer,
+			PurchaseRequestProducer purchaseRequestProducer) {
 		this.helloKafkaProducer = helloKafkaProducer;
 		this.counterProducer = counterProducer;
 		this.employeeJsonProducer = employeeJsonProducer;
+		this.purchaseRequestProducer = purchaseRequestProducer;
 	}
 
 	public static void main(String[] args) {
@@ -42,6 +43,17 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		PurchaseRequest purchaseRequest1 = new PurchaseRequest(UUID.randomUUID(), "REQ-001", 100, "USD");
+		PurchaseRequest purchaseRequest2 = new PurchaseRequest(UUID.randomUUID(), "REQ-002", 200, "EUR");
+		PurchaseRequest purchaseRequest3 = new PurchaseRequest(UUID.randomUUID(), "REQ-003", 300, "GBP");
+
+		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest1);
+		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest2);
+		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest3);
+
+		// Simulating a duplicate message recorded into t-purchase-request topic
+		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest1);
+
 		helloKafkaProducer.sendHello("Mehdi");
 	}
 

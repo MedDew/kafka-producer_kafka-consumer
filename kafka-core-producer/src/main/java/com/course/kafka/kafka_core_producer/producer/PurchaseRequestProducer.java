@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.course.kafka.kafka_core_producer.entity.PurchaseRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oracle.graal.compiler.enterprise.p;
 
 @Service
 public class PurchaseRequestProducer {
