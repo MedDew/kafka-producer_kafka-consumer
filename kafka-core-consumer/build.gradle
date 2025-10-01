@@ -27,6 +27,7 @@ dependencies {
 	
 	//Handle Java 8 Date and Time API : LocalDate, LocalTime, LocalDateTime ...
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2'
+	implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
 }
 
 tasks.named('test') {
