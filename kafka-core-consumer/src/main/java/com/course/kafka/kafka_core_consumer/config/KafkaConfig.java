@@ -2,7 +2,10 @@ package com.course.kafka.kafka_core_consumer.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.ssl.SslBundles;
@@ -12,17 +15,22 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
+import org.springframework.messaging.handler.annotation.Payload;
 
 import com.course.kafka.kafka_core_consumer.entity.CarLocation;
+import com.course.kafka.kafka_core_consumer.entity.PaymentRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.benmanes.caffeine.cache.Cache;
 
 @Configuration
 public class KafkaConfig {
 
     @Autowired
     private KafkaProperties kafkaProperties;
+
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaConfig.class);
 
     @Bean
     public ConsumerFactory<Object, Object> consumerFactory(SslBundles sslBundles) {
@@ -31,7 +39,7 @@ public class KafkaConfig {
         return new DefaultKafkaConsumerFactory<>(properties);
     }
 
-    @Bean
+    @Bean(name = "locationNearContainerFactory")
     public ConcurrentKafkaListenerContainerFactory<Object, Object> locationFarContainerFactory(
             ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
             SslBundles sslBundles,
@@ -51,6 +59,33 @@ public class KafkaConfig {
             }
 
             return carLocation.getDistance() <= 100;
+        });
+
+        return factory;
+    }
+
+    @Bean(name = "paymentRequestContainerFactory")
+    public ConcurrentKafkaListenerContainerFactory<Object, Object> paymentRequestContainerFactory(
+            ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
+            SslBundles sslBundles,
+            ObjectMapper objectMapper,
+            @Qualifier("cachePaymentRequest") Cache<String, Boolean> cachePaymentRequest) {
+
+        ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        configurer.configure(factory, consumerFactory(sslBundles));
+
+        factory.setRecordFilterStrategy(record -> {
+            PaymentRequest paymentRequest;
+            try {
+                paymentRequest = objectMapper.readValue(record.value().toString(), PaymentRequest.class);
+                if (cachePaymentRequest.getIfPresent(paymentRequest.calculateHash()) != null) {
+                    LOG.info("Skipping duplicate payment request: {}", paymentRequest);
+                }
+                return cachePaymentRequest.getIfPresent(paymentRequest.calculateHash()) != null;
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return false;
+            }
         });
 
         return factory;
