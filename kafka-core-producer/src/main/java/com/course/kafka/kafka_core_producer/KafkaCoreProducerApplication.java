@@ -1,6 +1,6 @@
 package com.course.kafka.kafka_core_producer;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,33 +8,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.course.kafka.kafka_core_producer.entity.PurchaseRequest;
-import com.course.kafka.kafka_core_producer.producer.CounterProducer;
-import com.course.kafka.kafka_core_producer.producer.Employee2JsonProducer;
-import com.course.kafka.kafka_core_producer.producer.HelloKafkaProducer;
-import com.course.kafka.kafka_core_producer.producer.PurchaseRequestProducer;
+import com.course.kafka.kafka_core_producer.entity.PaymentRequest;
+import com.course.kafka.kafka_core_producer.producer.PaymentRequestProducer;
 
 @SpringBootApplication
-// @EnableScheduling
 public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
 
-	private final Employee2JsonProducer employeeJsonProducer;
+	private PaymentRequestProducer paymentRequestProducer;
 
-	private final CounterProducer counterProducer;
-
-	private final HelloKafkaProducer helloKafkaProducer;
-
-	private PurchaseRequestProducer purchaseRequestProducer;
-
-	public KafkaCoreProducerApplication(Employee2JsonProducer employeeJsonProducer,
-			final CounterProducer counterProducer, HelloKafkaProducer helloKafkaProducer,
-			PurchaseRequestProducer purchaseRequestProducer) {
-		this.helloKafkaProducer = helloKafkaProducer;
-		this.counterProducer = counterProducer;
-		this.employeeJsonProducer = employeeJsonProducer;
-		this.purchaseRequestProducer = purchaseRequestProducer;
+	public KafkaCoreProducerApplication(PaymentRequestProducer paymentRequestProducer) {
+		this.paymentRequestProducer = paymentRequestProducer;
 	}
 
 	public static void main(String[] args) {
@@ -43,18 +28,30 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		PurchaseRequest purchaseRequest1 = new PurchaseRequest(UUID.randomUUID(), "REQ-001", 100, "USD");
-		PurchaseRequest purchaseRequest2 = new PurchaseRequest(UUID.randomUUID(), "REQ-002", 200, "EUR");
-		PurchaseRequest purchaseRequest3 = new PurchaseRequest(UUID.randomUUID(), "REQ-003", 300, "GBP");
+		PaymentRequest paymentRequest1 = new PaymentRequest(100, "USD", "987-654", "Payment for invoice 789",
+				LocalDate.now().plusDays(2));
+		PaymentRequest paymentRequest2 = new PaymentRequest(200, "CAN", "123-456", "Payment for invoice 123",
+				LocalDate.now());
+		PaymentRequest paymentRequest3 = new PaymentRequest(300, "EUR", "789-012", "Payment for invoice 456",
+				LocalDate.now().plusDays(5));
+		PaymentRequest paymentRequest4 = new PaymentRequest(400, "EUR", "789-012", "Payment for invoice 456",
+				LocalDate.now().plusDays(10));
+		PaymentRequest paymentRequest5 = new PaymentRequest(500, "EUR", "789-012", "Payment for invoice 456",
+				LocalDate.now().plusDays(15));
+		PaymentRequest paymentRequest6 = new PaymentRequest(600, "EUR", "789-012", "Payment for invoice 456",
+				LocalDate.now().plusDays(20));
 
-		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest1);
-		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest2);
-		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest3);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest1);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest2);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest3);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest4);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest5);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest6);
 
-		// Simulating a duplicate message recorded into t-purchase-request topic
-		purchaseRequestProducer.sendPurchaseRequest(purchaseRequest1);
+		// Simulating a duplicate message recorded into t-payment-request topic
+		paymentRequestProducer.sendPaymentRequest(paymentRequest1);
+		paymentRequestProducer.sendPaymentRequest(paymentRequest2);
 
-		helloKafkaProducer.sendHello("Mehdi");
 	}
 
 	/*
