@@ -10,3 +10,6 @@
 	
 ++> modify kafka min.insync.replicas (ISR : in sync replica) with replication factor and partitions for an existing topic (t-beta)
 	kafka-configs.sh --bootstrap-server localhost:9092 --alter --entity-type topics --entity-name t-beta --add-config min.insync.replicas=3
+
+++> show produced messages from t-payment-request topic giving the messages recorded
+	kafka-console-consumer.sh --bootstrap-server localhost:9092 --offset earliest --partition 0 --topic t-payment-request
