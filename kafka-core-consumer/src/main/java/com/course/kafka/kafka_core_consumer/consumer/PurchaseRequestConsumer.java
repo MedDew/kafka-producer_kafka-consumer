@@ -2,6 +2,7 @@ package com.course.kafka.kafka_core_consumer.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,8 @@ public class PurchaseRequestConsumer {
 
     private Cache<String, Boolean> cachePurchaserequest;
 
-    public PurchaseRequestConsumer(ObjectMapper objectMapper, Cache<String, Boolean> cachePurchaserequest) {
+    public PurchaseRequestConsumer(ObjectMapper objectMapper,
+            @Qualifier("cachePurchaserequest") Cache<String, Boolean> cachePurchaserequest) {
         this.objectMapper = objectMapper;
         this.cachePurchaserequest = cachePurchaserequest;
     }
