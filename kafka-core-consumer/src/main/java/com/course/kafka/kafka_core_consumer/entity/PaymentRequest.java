@@ -1,6 +1,9 @@
 package com.course.kafka.kafka_core_consumer.entity;
 
 import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class PaymentRequest {
 
@@ -13,6 +16,22 @@ public class PaymentRequest {
     private String notes;
 
     private LocalDate paymentDate;
+
+    public String calculateHash() {
+        String rawKey = amount + "//" + currency + "//" + bankAccountNumber;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(rawKey.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = String.format("%02x", b);
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 algorithm not found", e);
+        }
+    }
 
     public PaymentRequest() {
     }
