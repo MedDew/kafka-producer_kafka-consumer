@@ -19,8 +19,8 @@ public class PaymentRequestConsumer {
 
     private Cache<String, Boolean> cachePaymentRequest;
 
-            
-    public PaymentRequestConsumer(ObjectMapper objectMapper,@Qualifier("cachePaymentRequest") Cache<String, Boolean> cachePaymentRequest) {
+    public PaymentRequestConsumer(ObjectMapper objectMapper,
+            @Qualifier("cachePaymentRequest") Cache<String, Boolean> cachePaymentRequest) {
         this.objectMapper = objectMapper;
         this.cachePaymentRequest = cachePaymentRequest;
     }
@@ -31,21 +31,21 @@ public class PaymentRequestConsumer {
 
     @KafkaListener(topics = "t-payment-request")
     public void listen(String json) {
-        try {
+        // try {
 
-            PaymentRequest paymentRequest = objectMapper.readValue(json, PaymentRequest.class);
-            String cacheKey = paymentRequest.calculateHash();
+        //     PaymentRequest paymentRequest = objectMapper.readValue(json, PaymentRequest.class);
+        //     String cacheKey = paymentRequest.calculateHash();
 
-            if (isExistsInCache(cacheKey)) {
-                LOG.warn("Payment request already exists in cache : {}", paymentRequest);
-                return;
-            }
+        //     if (isExistsInCache(cacheKey)) {
+        //         LOG.warn("Payment request already exists in cache : {}", paymentRequest);
+        //         return;
+        //     }
 
-            LOG.info("Processing Payment request : {}", paymentRequest);
-            cachePaymentRequest.put(cacheKey, true);
+        //     LOG.info("Processing Payment request : {}", paymentRequest);
+        //     cachePaymentRequest.put(cacheKey, true);
 
-        } catch (Exception e) {
-            LOG.error("Error processing Payment request", e);
-        }
+        // } catch (Exception e) {
+        //     LOG.error("Error processing Payment request", e);
+        // }
     }
 }
