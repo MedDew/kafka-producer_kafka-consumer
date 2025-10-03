@@ -6,6 +6,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.course.kafka.kafka_core_consumer.entity.FoodOrder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -20,21 +22,17 @@ public class FoodOrderConsumer {
         this.objectMapper = objectMapper;
     }
 
-    @KafkaListener(topics = "t-food-order")
-    public void consume(String message) {
-        try {
-            // Assuming FoodOrder class is available in the consumer module
-            FoodOrder foodOrder = objectMapper.readValue(message, FoodOrder.class);
-            if (foodOrder.getAmount() > MAX_AMOUNT_ORDER) {
-                LOG.error("Amount {} exceeds the maximum allowed amount of {}", foodOrder.getAmount(),
-                        MAX_AMOUNT_ORDER);
-                throw new IllegalArgumentException("Order amount exceeds the maximum limit of " + MAX_AMOUNT_ORDER);
-            }
-
-            LOG.info("Consumed food order: {}", foodOrder);
-        } catch (Exception e) {
-            LOG.error("Error while consuming message: {}", message, e);
+    @KafkaListener(topics = "t-food-order", errorHandler = "myFoodErrorHandler")
+    public void consume(String message) throws JsonMappingException, JsonProcessingException {
+        // Assuming FoodOrder class is available in the consumer module
+        FoodOrder foodOrder = objectMapper.readValue(message, FoodOrder.class);
+        if (foodOrder.getAmount() > MAX_AMOUNT_ORDER) {
+            LOG.error("Amount {} exceeds the maximum allowed amount of {}", foodOrder.getAmount(),
+                    MAX_AMOUNT_ORDER);
+            throw new IllegalArgumentException("Order amount exceeds the maximum limit of " + MAX_AMOUNT_ORDER);
         }
+
+        LOG.info("Consumed food order: {}", foodOrder);
     }
 
 }
