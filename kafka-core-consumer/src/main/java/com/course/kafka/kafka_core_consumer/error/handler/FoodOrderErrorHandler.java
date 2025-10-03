@@ -21,6 +21,10 @@ public class FoodOrderErrorHandler implements ConsumerAwareListenerErrorHandler 
                 message.getPayload().toString(),
                 exception.getMessage());
 
+        if (exception.getCause() instanceof RuntimeException) {
+            throw exception;
+        }
+
         return null;
     }
 
