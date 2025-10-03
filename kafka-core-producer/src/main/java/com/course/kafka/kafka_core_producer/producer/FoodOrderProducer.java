@@ -19,12 +19,12 @@ public class FoodOrderProducer {
     }
 
     public void sendFoodOrder(FoodOrder foodOrder) {
-        try {
-            String foodOrderJson = objectMapper.writeValueAsString(foodOrder);
-            kafkaTemplate.send("t-food-order", foodOrderJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        // String foodOrderJson = objectMapper.writeValueAsString(foodOrder);
+        // kafkaTemplate.send("t-food-order", foodOrderJson);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
     }
 
 }

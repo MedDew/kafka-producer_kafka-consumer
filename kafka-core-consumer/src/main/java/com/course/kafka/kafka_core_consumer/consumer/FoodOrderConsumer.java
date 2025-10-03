@@ -22,7 +22,7 @@ public class FoodOrderConsumer {
         this.objectMapper = objectMapper;
     }
 
-    @KafkaListener(topics = "t-food-order", errorHandler = "myFoodErrorHandler")
+    // @KafkaListener(topics = "t-food-order", errorHandler = "myFoodErrorHandler")
     public void consume(String message) throws JsonMappingException, JsonProcessingException {
         // Assuming FoodOrder class is available in the consumer module
         FoodOrder foodOrder = objectMapper.readValue(message, FoodOrder.class);

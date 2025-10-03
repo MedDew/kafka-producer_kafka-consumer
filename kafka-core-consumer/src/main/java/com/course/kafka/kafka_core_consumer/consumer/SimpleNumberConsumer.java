@@ -21,7 +21,7 @@ public class SimpleNumberConsumer {
         this.objectMapper = objectMapper;
     }
 
-    @KafkaListener(topics = "t-simple-number")
+    // @KafkaListener(topics = "t-simple-number")
     public void consume(String message) throws JsonMappingException, JsonProcessingException {
         SimpleNumber simpleNumber = objectMapper.readValue(message, SimpleNumber.class);
 

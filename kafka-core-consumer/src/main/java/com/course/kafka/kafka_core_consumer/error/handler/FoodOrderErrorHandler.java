@@ -8,7 +8,7 @@ import org.springframework.kafka.listener.ListenerExecutionFailedException;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 
-@Service(value = "myFoodErrorHandler")
+//@Service(value = "myFoodErrorHandler")
 public class FoodOrderErrorHandler implements ConsumerAwareListenerErrorHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(FoodOrderErrorHandler.class);

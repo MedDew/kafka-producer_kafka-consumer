@@ -20,7 +20,7 @@ public class SimpleNumberProducer {
     }
 
     public void send(SimpleNumber simpleNumber) throws JsonProcessingException {
-        String simpleNumberJson = objectMapper.writeValueAsString(simpleNumber);
-        kafkaTemplate.send("t-simple-number", simpleNumberJson);
+        // String simpleNumberJson = objectMapper.writeValueAsString(simpleNumber);
+        // kafkaTemplate.send("t-simple-number", simpleNumberJson);
     }
 }
