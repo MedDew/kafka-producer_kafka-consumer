@@ -14,8 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.util.backoff.FixedBackOff;
 
 import com.course.kafka.kafka_core_consumer.entity.CarLocation;
 import com.course.kafka.kafka_core_consumer.entity.PaymentRequest;
@@ -87,6 +89,19 @@ public class KafkaConfig {
                 return false;
             }
         });
+
+        return factory;
+    }
+
+    @Bean(name = "imageRetryContainerFactory")
+    public ConcurrentKafkaListenerContainerFactory<Object, Object> imageRetryContainerFactory(
+            ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
+            SslBundles sslBundles) {
+
+        ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        configurer.configure(factory, consumerFactory(sslBundles));
+        factory.setConcurrency(2);
+        factory.setCommonErrorHandler(new DefaultErrorHandler(new FixedBackOff(10_000, 3)));
 
         return factory;
     }
