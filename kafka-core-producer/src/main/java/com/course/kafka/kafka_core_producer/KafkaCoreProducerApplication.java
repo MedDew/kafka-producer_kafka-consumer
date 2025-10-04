@@ -9,25 +9,27 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.course.kafka.kafka_core_producer.entity.FoodOrder;
+import com.course.kafka.kafka_core_producer.entity.Image;
 import com.course.kafka.kafka_core_producer.entity.PaymentRequest;
 import com.course.kafka.kafka_core_producer.entity.SimpleNumber;
 import com.course.kafka.kafka_core_producer.producer.FoodOrderProducer;
+import com.course.kafka.kafka_core_producer.producer.ImageProducer;
 import com.course.kafka.kafka_core_producer.producer.PaymentRequestProducer;
 import com.course.kafka.kafka_core_producer.producer.SimpleNumberProducer;
+import com.course.kafka.kafka_core_producer.service.ImageService;
 
 @SpringBootApplication
 public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
 
-	private FoodOrderProducer foodOrderProducer;
+	private ImageProducer imageProducer;
 
-	private SimpleNumberProducer simpleNumberProducer;
+	private ImageService imageService;
 
-	public KafkaCoreProducerApplication(FoodOrderProducer foodOrderProducer,
-			SimpleNumberProducer simpleNumberProducer) {
-		this.foodOrderProducer = foodOrderProducer;
-		this.simpleNumberProducer = simpleNumberProducer;
+	public KafkaCoreProducerApplication(ImageProducer imageProducer, ImageService imageService) {
+		this.imageProducer = imageProducer;
+		this.imageService = imageService;
 	}
 
 	public static void main(String[] args) {
@@ -36,18 +38,20 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		FoodOrder chickenOrder = new FoodOrder(3, "Chicken");
-		FoodOrder fishOrder = new FoodOrder(10, "Fish");
-		FoodOrder pizzaOrder = new FoodOrder(5, "Pizza");
+		Image image1 = imageService.generateImage("JPG");
+		Image image2 = imageService.generateImage("SVG");
+		Image image3 = imageService.generateImage("PNG");
+		Image image4 = imageService.generateImage("GIF");
+		Image image5 = imageService.generateImage("BMP");
+		Image image6 = imageService.generateImage("TIFF");
 
-		foodOrderProducer.sendFoodOrder(chickenOrder);
-		foodOrderProducer.sendFoodOrder(fishOrder);
-		foodOrderProducer.sendFoodOrder(pizzaOrder);
+		imageProducer.send(image1, 0);
+		imageProducer.send(image2, 0);
+		imageProducer.send(image3, 0);
 
-		for (int i = 100; i < 103; i++) {
-			SimpleNumber simpleNumber = new SimpleNumber(i);
-			simpleNumberProducer.send(simpleNumber);
-		}
+		imageProducer.send(image4, 1);
+		imageProducer.send(image5, 1);
+		imageProducer.send(image6, 1);
 
 	}
 
