@@ -1,27 +1,28 @@
 package com.course.kafka.kafka_core_producer;
 
-import java.time.LocalDate;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.course.kafka.kafka_core_producer.entity.FoodOrder;
-import com.course.kafka.kafka_core_producer.entity.Image;
-import com.course.kafka.kafka_core_producer.entity.PaymentRequest;
-import com.course.kafka.kafka_core_producer.entity.SimpleNumber;
-import com.course.kafka.kafka_core_producer.producer.FoodOrderProducer;
-import com.course.kafka.kafka_core_producer.producer.ImageProducer;
-import com.course.kafka.kafka_core_producer.producer.PaymentRequestProducer;
-import com.course.kafka.kafka_core_producer.producer.SimpleNumberProducer;
-import com.course.kafka.kafka_core_producer.service.ImageService;
+import com.course.kafka.kafka_core_producer.entity.Invoice;
+import com.course.kafka.kafka_core_producer.producer.InvoiceProducer;
+import com.course.kafka.kafka_core_producer.service.InvoiceService;
 
 @SpringBootApplication
 public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
+
+	private InvoiceProducer invoiceProducer;
+
+	private InvoiceService invoiceService;
+
+	public KafkaCoreProducerApplication(InvoiceProducer invoiceProducer, InvoiceService invoiceService) {
+		this.invoiceProducer = invoiceProducer;
+		this.invoiceService = invoiceService;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(KafkaCoreProducerApplication.class, args);
@@ -29,7 +30,15 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		for (int i = 0; i < 10; i++) {
+			Invoice invoice = invoiceService.generateInvoice();
 
+			if (i > 5) {
+				invoice.setAmount(0d);
+			}
+
+			invoiceProducer.sendinvoice(invoice);
+		}
 	}
 
 	/*
