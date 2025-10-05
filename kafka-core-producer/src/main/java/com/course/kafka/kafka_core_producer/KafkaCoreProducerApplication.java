@@ -33,6 +33,8 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 		for (int i = 0; i < 10; i++) {
 			Invoice invoice = invoiceService.generateInvoice();
 
+			LOG.info("Generated invoice: {} at iteration => {}", invoice.getInvoiceNumber(), i);
+
 			if (i > 5) {
 				invoice.setAmount(0d);
 			}
