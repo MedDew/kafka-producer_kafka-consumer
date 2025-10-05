@@ -28,12 +28,12 @@ public class ImageConsumer {
     public void consume(String message, @Header(KafkaHeaders.RECEIVED_PARTITION) int partition)
             throws JsonMappingException, JsonProcessingException {
 
-        Image image = objectMapper.readValue(message, Image.class);
+        // Image image = objectMapper.readValue(message, Image.class);
 
-        if ("SVG".equalsIgnoreCase(image.getType())) {
-            throw new IllegalArgumentException("SVG images are not supported");
-        }
-        LOG.info("Image received: {} from partition {}", image, partition);
+        // if ("SVG".equalsIgnoreCase(image.getType())) {
+        // throw new IllegalArgumentException("SVG images are not supported");
+        // }
+        // LOG.info("Image received: {} from partition {}", image, partition);
 
     }
 

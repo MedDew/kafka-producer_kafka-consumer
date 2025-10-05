@@ -19,11 +19,11 @@ public class ImageProducer {
     }
 
     public void send(Image image, int partition) {
-        try {
-            String imageJson = objectMapper.writeValueAsString(image);
-            kafkaTemplate.send("t-image", partition, image.getType(), imageJson);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // try {
+        // String imageJson = objectMapper.writeValueAsString(image);
+        // kafkaTemplate.send("t-image", partition, image.getType(), imageJson);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
     }
 }

@@ -23,35 +23,12 @@ public class KafkaCoreProducerApplication implements CommandLineRunner {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaCoreProducerApplication.class);
 
-	private ImageProducer imageProducer;
-
-	private ImageService imageService;
-
-	public KafkaCoreProducerApplication(ImageProducer imageProducer, ImageService imageService) {
-		this.imageProducer = imageProducer;
-		this.imageService = imageService;
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(KafkaCoreProducerApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		Image image1 = imageService.generateImage("JPG");
-		Image image2 = imageService.generateImage("SVG");
-		Image image3 = imageService.generateImage("PNG");
-		Image image4 = imageService.generateImage("GIF");
-		Image image5 = imageService.generateImage("BMP");
-		Image image6 = imageService.generateImage("TIFF");
-
-		imageProducer.send(image1, 0);
-		imageProducer.send(image2, 0);
-		imageProducer.send(image3, 0);
-
-		imageProducer.send(image4, 1);
-		imageProducer.send(image5, 1);
-		imageProducer.send(image6, 1);
 
 	}
 
