@@ -2,6 +2,7 @@ package com.course.kafka.kafka_core_consumer.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -102,6 +105,24 @@ public class KafkaConfig {
         configurer.configure(factory, consumerFactory(sslBundles));
         factory.setConcurrency(2);
         factory.setCommonErrorHandler(new DefaultErrorHandler(new FixedBackOff(10_000, 3)));
+
+        return factory;
+    }
+
+    @Bean(name = "incoiceDltContainerFactory")
+    public ConcurrentKafkaListenerContainerFactory<Object, Object> incoiceDltContainerFactory(
+            ConcurrentKafkaListenerContainerFactoryConfigurer configurer,
+            SslBundles sslBundles,
+            KafkaTemplate<Object, Object> kafkaTemplate) {
+
+        ConcurrentKafkaListenerContainerFactory<Object, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        configurer.configure(factory, consumerFactory(sslBundles));
+        factory.setConcurrency(2);
+        DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate,
+                (r, e) -> new TopicPartition("t-invoice-dead", r.partition()));
+
+        // Retry every 3 seconds, maximum 5 retries, then send to DLT
+        factory.setCommonErrorHandler(new DefaultErrorHandler(recoverer, new FixedBackOff(3000, 5)));
 
         return factory;
     }
