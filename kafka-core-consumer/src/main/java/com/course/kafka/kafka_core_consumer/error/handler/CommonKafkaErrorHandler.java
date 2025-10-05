@@ -8,7 +8,7 @@ import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class CommonKafkaErrorHandler implements CommonErrorHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommonKafkaErrorHandler.class);
