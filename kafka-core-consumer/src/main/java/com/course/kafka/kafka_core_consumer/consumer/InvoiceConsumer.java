@@ -27,7 +27,8 @@ public class InvoiceConsumer {
         Invoice invoice = objectMapper.readValue(invoiceJson, Invoice.class);
 
         if (invoice.getAmount() < 1) {
-            throw new IllegalArgumentException("Invoice amount is less than 1 : " + invoice.getAmount());
+            throw new IllegalArgumentException("Invoice amount is less than 1 : " + invoice.getAmount()
+                    + ", for invoice : " + invoice.getInvoiceNumber());
         }
 
         LOG.info("Consuming invoice: {}", invoiceJson);
